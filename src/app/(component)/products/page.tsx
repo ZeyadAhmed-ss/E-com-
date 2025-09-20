@@ -5,7 +5,7 @@ import Link from "next/link";
 import React from "react";
 
 export default async function Products() {
-  let dataList = await getAllProducts();
+  const dataList = await getAllProducts();
   
 
   return (

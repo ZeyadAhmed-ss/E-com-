@@ -3,7 +3,7 @@ import React from 'react'
 import CategoriesSlider from '../categorySlider/page'
 
 export default async function AllCategory() {
-    let data = await getAllCategories()
+    const data = await getAllCategories()
   
     return (
     <div>

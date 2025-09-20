@@ -2,6 +2,7 @@
 
 import React, { use, useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { getProductById } from "../../../../Api/productD.api";
 import AddBtn from "@/src/app/_components/addBtn/page";
 
@@ -12,25 +13,25 @@ import { getWishlist } from "../../../../Api/wishlist/getWishlist.api";
 import { useWishlist } from "@/src/context/wishlistContext";
 
 import { toast } from "sonner";
+import { Root, Data } from "../../../interface/productD.interface";
 
 interface ProductDetailProps {
-  params: Promise<{ id: string }>; // لاحظ انها بقت Promise
+  params: Promise<{ id: string }>;
 }
 
 export default function ProductDetail({ params }: ProductDetailProps) {
-  // نفك الـ params بالـ React.use()
   const { id } = use(params);
 
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<Data | null>(null);
   const [loading, setLoading] = useState(true);
   const [inWishlist, setInWishlist] = useState(false);
 
-  const { addItem, removeItem } = useWishlist(); // ✅ جبت الفانكشنز من الكونتكست
+  const { addItem, removeItem } = useWishlist();
 
   useEffect(() => {
     async function fetchProduct() {
-      const data = await getProductById(id);
-      setProduct(data);
+      const data: Root = await getProductById(id);
+      setProduct(data.data);
       setLoading(false);
     }
     fetchProduct();
@@ -39,7 +40,7 @@ export default function ProductDetail({ params }: ProductDetailProps) {
   useEffect(() => {
     const checkWishlist = async () => {
       const data = await getWishlist();
-      if (data?.data?.some((item: any) => item._id === id)) {
+      if (data?.data?.some((item) => item._id === id)) {
         setInWishlist(true);
       }
     };
@@ -49,37 +50,35 @@ export default function ProductDetail({ params }: ProductDetailProps) {
   const toggleWishlist = async () => {
     if (inWishlist) {
       await removeFromWishlist(id);
-      removeItem(id); // ✅ تحديث الكونتكست
+      removeItem(id);
       setInWishlist(false);
       toast.error("Removed from Wishlist ❌");
     } else {
       await addToWishlist(id);
-      if (product) addItem(product); // ✅ ضيف في الكونتكست
+      if (product) addItem(product);
       setInWishlist(true);
       toast.success("Added to Wishlist ✅");
     }
   };
 
   if (loading)
-  return (
-    <div className="container w-[70%] mx-auto my-40">
-      <div className="flex flex-col md:flex-row gap-10 items-center">
-        {/* Skeleton Product Image */}
-        <div className="flex-1 flex justify-center">
-          <div className="w-full max-w-md h-[400px] bg-gray-200 animate-pulse rounded-3xl" />
-        </div>
-
-        {/* Skeleton Product Info */}
-        <div className="flex-1 space-y-4">
-          <div className="h-10 bg-gray-200 rounded-md animate-pulse w-3/4" />
-          <div className="h-6 bg-gray-200 rounded-md animate-pulse w-full" />
-          <div className="h-6 bg-gray-200 rounded-md animate-pulse w-1/2" />
-          <div className="h-6 bg-gray-200 rounded-md animate-pulse w-1/3" />
-          <div className="h-10 bg-gray-200 rounded-md animate-pulse w-1/2" />
+    return (
+      <div className="container w-[70%] mx-auto my-40">
+        <div className="flex flex-col md:flex-row gap-10 items-center">
+          <div className="flex-1 flex justify-center">
+            <div className="w-full max-w-md h-[400px] bg-gray-200 animate-pulse rounded-3xl" />
+          </div>
+          <div className="flex-1 space-y-4">
+            <div className="h-10 bg-gray-200 rounded-md animate-pulse w-3/4" />
+            <div className="h-6 bg-gray-200 rounded-md animate-pulse w-full" />
+            <div className="h-6 bg-gray-200 rounded-md animate-pulse w-1/2" />
+            <div className="h-6 bg-gray-200 rounded-md animate-pulse w-1/3" />
+            <div className="h-10 bg-gray-200 rounded-md animate-pulse w-1/2" />
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+
   if (!product) return <p>Failed to load product</p>;
 
   return (
@@ -88,12 +87,13 @@ export default function ProductDetail({ params }: ProductDetailProps) {
         {/* Product Image */}
         <div className="flex-1 flex justify-center relative">
           <div className="w-full max-w-md rounded-3xl overflow-hidden shadow-xl border border-gray-200 hover:shadow-xl hover:border-pink-500 transition-colors duration-300 relative">
-            <img
+            <Image
               src={product.imageCover}
               alt={product.title}
+              width={500}
+              height={500}
               className="w-full h-auto object-cover transition-transform duration-300 hover:scale-105"
             />
-            {/* Wishlist Heart */}
             <button
               onClick={toggleWishlist}
               className="absolute top-4 right-4 text-2xl transition-transform transform hover:scale-125"

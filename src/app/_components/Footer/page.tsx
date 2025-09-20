@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -36,10 +37,26 @@ export default function Footer() {
             Shop
           </h3>
           <ul className="space-y-3 text-sm">
-            <li><a href="/products" className="hover:text-pink-400 transition">All Products</a></li>
-            <li><a href="/categories" className="hover:text-pink-400 transition">Categories</a></li>
-            <li><a href="/offers" className="hover:text-pink-400 transition">Special Offers</a></li>
-            <li><a href="/new" className="hover:text-pink-400 transition">New Arrivals</a></li>
+            <li>
+              <Link href="/products" className="hover:text-pink-400 transition">
+                All Products
+              </Link>
+            </li>
+            <li>
+              <Link href="/categories" className="hover:text-pink-400 transition">
+                Categories
+              </Link>
+            </li>
+            <li>
+              <Link href="/offers" className="hover:text-pink-400 transition">
+                Special Offers
+              </Link>
+            </li>
+            <li>
+              <Link href="/new" className="hover:text-pink-400 transition">
+                New Arrivals
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -49,10 +66,26 @@ export default function Footer() {
             Company
           </h3>
           <ul className="space-y-3 text-sm">
-            <li><a href="/about" className="hover:text-pink-400 transition">About Us</a></li>
-            <li><a href="/team" className="hover:text-pink-400 transition">Our Team</a></li>
-            <li><a href="/careers" className="hover:text-pink-400 transition">Careers</a></li>
-            <li><a href="/blog" className="hover:text-pink-400 transition">Blog</a></li>
+            <li>
+              <Link href="/about" className="hover:text-pink-400 transition">
+                About Us
+              </Link>
+            </li>
+            <li>
+              <Link href="/team" className="hover:text-pink-400 transition">
+                Our Team
+              </Link>
+            </li>
+            <li>
+              <Link href="/careers" className="hover:text-pink-400 transition">
+                Careers
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog" className="hover:text-pink-400 transition">
+                Blog
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -62,10 +95,26 @@ export default function Footer() {
             Support
           </h3>
           <ul className="space-y-3 text-sm">
-            <li><a href="/faq" className="hover:text-pink-400 transition">FAQ</a></li>
-            <li><a href="/shipping" className="hover:text-pink-400 transition">Shipping</a></li>
-            <li><a href="/returns" className="hover:text-pink-400 transition">Returns</a></li>
-            <li><a href="/contact" className="hover:text-pink-400 transition">Contact Us</a></li>
+            <li>
+              <Link href="/faq" className="hover:text-pink-400 transition">
+                FAQ
+              </Link>
+            </li>
+            <li>
+              <Link href="/shipping" className="hover:text-pink-400 transition">
+                Shipping
+              </Link>
+            </li>
+            <li>
+              <Link href="/returns" className="hover:text-pink-400 transition">
+                Returns
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className="hover:text-pink-400 transition">
+                Contact Us
+              </Link>
+            </li>
           </ul>
         </div>
 

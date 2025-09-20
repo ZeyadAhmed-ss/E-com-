@@ -1,15 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getWishlist } from "../../../Api/wishlist/getWishlist.api";
-import { removeFromWishlist } from "../../../Api/wishlist/deleteWishlist.api";
-import { useWishlist } from "@/src/context/wishlistContext"; // ✅ استدعاء الكونتكست
+import Link from "next/link";
+import Image from "next/image";
+import { getWishlist } from "@/src/Api/wishlist/getWishlist.api";
+import { removeFromWishlist } from "@/src/Api/wishlist/deleteWishlist.api";
+import { useWishlist } from "@/src/context/wishlistContext";
 import { toast } from "sonner"; 
+import { WishlistItem } from "../../interface/wishlist.interface";
 
 export default function WishlistPage() {
-  const [wishlist, setWishlist] = useState<any[]>([]);
+  const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const { removeItem, addItem } = useWishlist(); // ✅ هنستخدم removeItem هنا
+  const { removeItem, addItem } = useWishlist();
 
   useEffect(() => {
     const fetchWishlist = async () => {
@@ -18,8 +21,7 @@ export default function WishlistPage() {
       setWishlist(data?.data || []);
       setLoading(false);
 
-      
-      (data?.data || []).forEach((item: any) => addItem(item));
+      (data?.data || []).forEach((item: WishlistItem) => addItem(item));
     };
 
     fetchWishlist();
@@ -29,8 +31,8 @@ export default function WishlistPage() {
     await removeFromWishlist(productId);
     setWishlist((prev) => prev.filter((item) => item._id !== productId));
 
-    removeItem(productId); // ✅ تحديث الكونتكست → الرقم في الـ Navbar يتغير
-    toast.error("Removed from Wishlist ❌"); // ✅ التوستر
+    removeItem(productId);
+    toast.error("Removed from Wishlist ❌");
   };
 
   return (
@@ -65,12 +67,12 @@ export default function WishlistPage() {
             <p className="text-gray-500 mb-6">
               Start adding your favorite products to see them here.
             </p>
-            <a
+            <Link
               href="/products"
               className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-medium rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
             >
               <i className="fas fa-shopping-bag mr-2"></i> Browse Products
-            </a>
+            </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -81,10 +83,11 @@ export default function WishlistPage() {
               >
                 {/* Product Image */}
                 <div className="relative w-full h-60 mb-5">
-                  <img
+                  <Image
                     src={item.imageCover}
                     alt={item.title}
-                    className="w-full h-full object-contain rounded-lg"
+                    fill
+                    className="object-contain rounded-lg"
                   />
 
                   {/* Elegant Remove Button */}
@@ -108,12 +111,12 @@ export default function WishlistPage() {
                   <span className="text-2xl font-bold text-pink-600">
                     ${item.price}
                   </span>
-                  <a
+                  <Link
                     href={`/products/${item._id}`}
                     className="px-5 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-sm font-medium rounded-lg shadow hover:shadow-lg hover:scale-105 transition-all duration-300"
                   >
                     <i className="fas fa-eye mr-2"></i> View
-                  </a>
+                  </Link>
                 </div>
               </div>
             ))}

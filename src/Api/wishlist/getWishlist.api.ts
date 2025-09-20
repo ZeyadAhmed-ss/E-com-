@@ -1,25 +1,58 @@
 "use server";
 import getMyToken from "@/src/utilities/getMyToken";
+import { Root } from "../../app/interface/wishlist.interface"; // استيراد الانترفيس
 
-export async function getWishlist() {
+export async function getWishlist(): Promise<Root> {
   try {
-    const token: any = await getMyToken();
-    if (!token) return [];
+    const token = await getMyToken();
+    if (!token) {
+      
+      return {
+        results: 0,
+        metadata: {
+          currentPage: 1,
+          numberOfPages: 1,
+          limit: 0,
+          nextPage: 1,
+        },
+        data: [],
+      };
+    }
 
     const res = await fetch("https://ecommerce.routemisr.com/api/v1/wishlist", {
       method: "GET",
       headers: {
-        token: token,
+        token,
         "Content-Type": "application/json",
       },
     });
 
-    if (!res.ok) return [];
+    if (!res.ok) {
+      return {
+        results: 0,
+        metadata: {
+          currentPage: 1,
+          numberOfPages: 1,
+          limit: 0,
+          nextPage: 1,
+        },
+        data: [],
+      };
+    }
 
-    const data = await res.json();
+    const data: Root = await res.json(); // نطبق الانترفيس مباشرة
     return data;
   } catch (err) {
     console.error("Error fetching wishlist:", err);
-    return [];
+    return {
+      results: 0,
+      metadata: {
+        currentPage: 1,
+        numberOfPages: 1,
+        limit: 0,
+        nextPage: 1,
+      },
+      data: [],
+    };
   }
 }
