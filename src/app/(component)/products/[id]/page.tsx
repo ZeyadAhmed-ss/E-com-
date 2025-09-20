@@ -26,12 +26,13 @@ export default function ProductDetail({ params }: ProductDetailProps) {
   const [loading, setLoading] = useState(true);
   const [inWishlist, setInWishlist] = useState(false);
 
+
   const { addItem, removeItem } = useWishlist();
 
   useEffect(() => {
     async function fetchProduct() {
       const data: Root = await getProductById(id);
-      setProduct(data.data);
+      setProduct(data.data); 
       setLoading(false);
     }
     fetchProduct();
@@ -40,7 +41,7 @@ export default function ProductDetail({ params }: ProductDetailProps) {
   useEffect(() => {
     const checkWishlist = async () => {
       const data = await getWishlist();
-      if (data?.data?.some((item) => item._id === id)) {
+      if (data?.data?.some((item: { _id: string; }) => item._id === id)) {
         setInWishlist(true);
       }
     };

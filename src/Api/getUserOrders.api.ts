@@ -13,7 +13,7 @@ export async function getUserOrders() {
       {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",21
+          "Content-Type": "application/json",
         },
       }
     );

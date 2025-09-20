@@ -40,7 +40,7 @@ export async function getWishlist(): Promise<Root> {
       };
     }
 
-    const data: Root = await res.json(); // نطبق الانترفيس مباشرة
+    const data: Root = await res.json(); 
     return data;
   } catch (err) {
     console.error("Error fetching wishlist:", err);
