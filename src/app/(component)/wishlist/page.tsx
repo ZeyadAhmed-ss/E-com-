@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getWishlist } from "../../../Api/wishlist/getWishlist.api";
 import { removeFromWishlist } from "../../../Api/wishlist/deleteWishlist.api";
 import { useWishlist } from "@/src/context/wishlistContext"; // ✅ استدعاء الكونتكست
-import { toast } from "sonner"; // ✅ للتوستر
+import { toast } from "sonner"; 
 
 export default function WishlistPage() {
   const [wishlist, setWishlist] = useState<any[]>([]);
@@ -18,7 +18,7 @@ export default function WishlistPage() {
       setWishlist(data?.data || []);
       setLoading(false);
 
-      // ✅ نعمل مزامنة مع الكونتكست عشان الرقم في الـ Navbar يبقى نفس اللي هنا
+      
       (data?.data || []).forEach((item: any) => addItem(item));
     };
 

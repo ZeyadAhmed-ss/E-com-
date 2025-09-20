@@ -2,10 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { getUserOrders } from "@/src/Api/orders/getUserOrders.api";
+import { Order } from "../../interface/order.interface"; 
 
 export default function AllOrdersPage() {
   const { data: session, status } = useSession();
-  const [orders, setOrders] = useState<any[]>([]);
+
+  // بدل any[] هتستخدم Order[]
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -13,7 +16,7 @@ export default function AllOrdersPage() {
       const fetchOrders = async () => {
         setLoading(true);
         const data = await getUserOrders(session.user.id);
-        setOrders(data || []);
+        setOrders(data || []); 
         setLoading(false);
       };
       fetchOrders();

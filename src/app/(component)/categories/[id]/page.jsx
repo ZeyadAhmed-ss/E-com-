@@ -1,6 +1,4 @@
-import React from "react";
 import Link from "next/link";
-
 export default async function CategoryDetail({ params }) {
   let message = "Something went wrong while loading category";
   const { id } = params;
