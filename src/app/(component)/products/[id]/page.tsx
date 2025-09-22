@@ -32,7 +32,7 @@ export default function ProductDetail({ params }: ProductDetailProps) {
     async function fetchProduct() {
       try {
         const data: Root = await getProductById(id);
-        setProduct(data.data); // هنا data.data = ProductData
+        setProduct(data.data); 
       } catch (error) {
         console.error("Failed to fetch product:", error);
       } finally {
