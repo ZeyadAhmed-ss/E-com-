@@ -21,7 +21,6 @@ export interface ProductData {
   createdAt: string;
   updatedAt: string;
   __v: number;
-  reviews: any[];
 }
 
 export interface Subcategory {

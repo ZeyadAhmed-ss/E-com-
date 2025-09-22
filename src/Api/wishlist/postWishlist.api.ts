@@ -1,12 +1,10 @@
 "use server";
 import getMyToken from "@/src/utilities/getMyToken";
-import { WishlistResponse } from "../../app/interface/PostWishlist.interface";
-import { AddToWishlistRequest } from "../../app/interface/wishlist.interface";
-
+import { WishlistResponse, AddToWishlistRequest } from "../../app/interface/wishlist.interface";
 
 export async function addToWishlist(productId: string): Promise<WishlistResponse | null> {
   try {
-    const token: any = await getMyToken();
+    const token = await getMyToken(); 
     if (!token) return null;
 
     const body: AddToWishlistRequest = { productId };
@@ -14,11 +12,13 @@ export async function addToWishlist(productId: string): Promise<WishlistResponse
     const res = await fetch("https://ecommerce.routemisr.com/api/v1/wishlist", {
       method: "POST",
       headers: {
-        token: token,
+        "Authorization": `Bearer ${token.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     });
+
+    if (!res.ok) throw new Error("Failed to add to wishlist");
 
     const data: WishlistResponse = await res.json();
     return data;
