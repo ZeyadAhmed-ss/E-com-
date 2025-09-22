@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios , {AxiosError} from "axios";
 import { useRouter } from "next/navigation"; 
 
 
@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import formSchema from "../../schema/register.schema";
 import { toast } from "sonner";
+
 
 export default function RegisterPage() {
   const router = useRouter(); 
@@ -46,7 +47,6 @@ export default function RegisterPage() {
       }
     );
 
-    
     toast.custom(
       (t) => (
         <div
@@ -60,15 +60,17 @@ export default function RegisterPage() {
       { duration: 3000 }
     );
 
-  
     setTimeout(() => {
       router.push("/signin");
     }, 2000);
-    
-  } catch (error: any) {
+  } catch (err) {
+    let message = "Signup failed";
 
-    const message =
-      error.response?.data?.message || "Signup failed";
+    if (axios.isAxiosError(err)) {
+      const axiosError = err as AxiosError<{ message?: string }>;
+      message = axiosError.response?.data?.message || message;
+    }
+
     toast.custom(
       (t) => (
         <div

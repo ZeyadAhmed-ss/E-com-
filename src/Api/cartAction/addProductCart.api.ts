@@ -38,8 +38,8 @@ export async function AddToCart(id: string) {
     
     const data = await res.json();
     return data;
-  } catch (error: any) {
-    console.error("AddToCart Error:", error.message);
-    return { success: false, message: error.message };
-  }
+  } catch {
+  return { success: false, message: "Something went wrong" };
+}
+
 }

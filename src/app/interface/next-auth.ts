@@ -30,3 +30,14 @@ declare module "next-auth/jwt" {
     token: string;
   }
 }
+
+export interface JWTPayload {
+  id?: string;
+  sub?: string;
+  name?: string;
+  email?: string;
+  role?: string;
+  exp?: number;
+  iat?: number;
+}
+

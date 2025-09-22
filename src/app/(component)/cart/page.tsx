@@ -170,7 +170,7 @@ export default function Cart() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-8">
-            {cartList.map((item: any, index: number) => (
+            {cartList.map((item, index: number) => (
               <div
                 key={index}
                 className="flex items-center gap-8 bg-white border border-gray-200 rounded-3xl shadow-sm p-6"

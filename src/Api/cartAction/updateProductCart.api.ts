@@ -1,6 +1,5 @@
 "use server"
 import getMyToken from "@/src/utilities/getMyToken";
-import { count } from "console";
 
 export async function UpdateProductToCart(id:string,countNumber:number) {
 

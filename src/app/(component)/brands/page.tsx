@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import getAllBrands from "../../../Api/brands.api";
-import { Root, Daum } from "../../interface/brands.interface"; // عدل المسار لو مختلف
+import { Brand } from "../../interface/brands.interface"; // استخدم Brand بدل Daum
 
 export default async function Brands() {
-  // هنا بنجيب الـ API ونعرف النوع
-  const response: Root | null = await getAllBrands();
+  // هنا بنجيب الـ API ونعرّف النوع
+  const response = await getAllBrands();
 
   if (!response || response.data.length === 0) {
     return (
@@ -18,8 +18,8 @@ export default async function Brands() {
     );
   }
 
-  // دلوقتي brands هي من النوع Daum[]
-  const brands: Daum[] = response.data;
+  // دلوقتي brands هي من النوع Brand[]
+  const brands: Brand[] = response.data;
 
   return (
     <div className="container mx-auto my-32 px-6">
@@ -30,7 +30,7 @@ export default async function Brands() {
 
       {/* Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
-        {brands.map((brand: Daum) => (
+        {brands.map((brand: Brand) => (
           <Link
             key={brand._id}
             href={`/brands/${brand._id}`}

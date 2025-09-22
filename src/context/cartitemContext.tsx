@@ -2,7 +2,15 @@
 import React, { createContext, useState, useEffect } from "react";
 import { getLoggedUserCart } from "@/src/Api/cartAction/getLoggedUserCart.api";
 
-export const CartItemContext = createContext<any>(null);
+// Interface للـ context value
+interface CartContextType {
+  dataDetails: number;
+  setDetails: React.Dispatch<React.SetStateAction<number>>;
+  getDetails: () => Promise<void>;
+}
+
+// Context بقيمة افتراضية undefined علشان نعرف نعمل useContext بشكل آمن
+export const CartItemContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartContextProvider({ children }: { children: React.ReactNode }) {
   const [dataDetails, setDetails] = useState<number>(0);

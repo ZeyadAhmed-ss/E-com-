@@ -1,15 +1,18 @@
+// Category
 export interface Category {
   _id: string;
   name: string;
   slug: string;
 }
 
+// Brand
 export interface Brand {
   _id: string;
   name: string;
   slug: string;
 }
 
+// Product
 export interface Product {
   _id: string;
   title: string;
@@ -20,20 +23,15 @@ export interface Product {
   price: number;
 }
 
+// عنصر wishlist
 export interface WishlistItem {
   _id: string;
   product: Product;
-  price: number;
-  imageCover: string;
 }
 
+// الـ response من أي عملية wishlist
 export interface WishlistResponse {
   status: string;
   message: string;
-  count: number;
   data: WishlistItem[];
-}
-
-export interface AddToWishlistRequest {
-  productId: string;
 }

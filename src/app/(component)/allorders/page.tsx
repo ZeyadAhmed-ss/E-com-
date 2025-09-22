@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { getUserOrders } from "@/src/Api/orders/getUserOrders.api";
-import { Order } from "../../interface/order.interface"; 
+import { Order } from "../../interface/order.interface";
+import Image from "next/image";
 
 export default function AllOrdersPage() {
   const { data: session, status } = useSession();
 
-  // بدل any[] هتستخدم Order[]
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +16,7 @@ export default function AllOrdersPage() {
       const fetchOrders = async () => {
         setLoading(true);
         const data = await getUserOrders(session.user.id);
-        setOrders(data || []); 
+        setOrders(data || []);
         setLoading(false);
       };
       fetchOrders();
@@ -87,9 +87,11 @@ export default function AllOrdersPage() {
                   key={item._id}
                   className="flex items-center gap-3 p-3 border rounded-xl hover:shadow-md transition"
                 >
-                  <img
+                  <Image
                     src={item.product.imageCover}
                     alt={item.product.title}
+                    width={64}
+                    height={64}
                     className="w-16 h-16 rounded object-cover"
                   />
                   <div>

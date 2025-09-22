@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { BrandResponse, ProductsResponse, Product } from "../../../interface/brands.interface";
 
 export default async function BrandDetail({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -10,8 +11,8 @@ export default async function BrandDetail({ params }: { params: { id: string } }
       cache: "no-cache",
     });
     if (!brandRes.ok) throw new Error("Failed to fetch brand");
-    const brandData = await brandRes.json();
-    const brand = brandData?.data;
+    const brandData: BrandResponse = await brandRes.json();
+    const brand = brandData.data;
 
     // Get products of this brand
     const productsRes = await fetch(
@@ -19,8 +20,8 @@ export default async function BrandDetail({ params }: { params: { id: string } }
       { cache: "no-cache" }
     );
     if (!productsRes.ok) throw new Error("Failed to fetch products");
-    const productsData = await productsRes.json();
-    const products = productsData?.data || [];
+    const productsData: ProductsResponse = await productsRes.json();
+    const products = productsData.data || [];
 
     return (
       <div className="container w-[80%] mx-auto my-32 ">
@@ -67,52 +68,52 @@ export default async function BrandDetail({ params }: { params: { id: string } }
           </div>
         </div>
 
-       
         {/* Products of this brand */}
-<div className="mt-20 ">
-  <h2 className="text-4xl font-extrabold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">
-    {brand.name} Products
-  </h2>
+        <div className="mt-20 ">
+          <h2 className="text-4xl font-extrabold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">
+            {brand.name} Products
+          </h2>
 
-  {products.length > 0 ? (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-      {products.map((product: any) => (
-        <Link
-          key={product._id}
-          href={`/products/${product._id}`}
-          className="rounded-2xl overflow-hidden border border-gray-200 shadow-md hover:shadow-xl hover:scale-[1.02] transition duration-300"
-        >
-          <img
-            src={product.imageCover}
-            alt={product.title}
-            className="w-full h-56 object-cover"
-          />
-          <div className="p-4 space-y-2">
-            <h3 className="font-semibold text-lg line-clamp-1">{product.title}</h3>
-            <div className="flex items-center justify-between">
-              <span className="text-xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 text-transparent bg-clip-text">
-                {product.price} EGP
-              </span>
-              {product.ratingsAverage && (
-                <span className="text-yellow-500 font-medium flex items-center gap-1">
-                  <i className="fas fa-star"></i> {product.ratingsAverage}
-                </span>
-              )}
+          {products.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+              {products.map((product: Product) => (
+                <Link
+                  key={product._id}
+                  href={`/products/${product._id}`}
+                  className="rounded-2xl overflow-hidden border border-gray-200 shadow-md hover:shadow-xl hover:scale-[1.02] transition duration-300"
+                >
+                  <img
+                    src={product.imageCover}
+                    alt={product.title}
+                    className="w-full h-56 object-cover"
+                  />
+                  <div className="p-4 space-y-2">
+                    <h3 className="font-semibold text-lg line-clamp-1">{product.title}</h3>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 text-transparent bg-clip-text">
+                        {product.price} EGP
+                      </span>
+                      {product.ratingsAverage && (
+                        <span className="text-yellow-500 font-medium flex items-center gap-1">
+                          <i className="fas fa-star"></i> {product.ratingsAverage}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
-          </div>
-        </Link>
-      ))}
-    </div>
-  ) : (
-    <p className="text-center text-gray-600">No products found for this brand.</p>
-  )}
-</div>
-
-
-
+          ) : (
+            <p className="text-center text-gray-600">No products found for this brand.</p>
+          )}
+        </div>
       </div>
     );
-  } catch (error) {
-  
+  } catch {
+    return (
+      <div className="flex items-center justify-center h-[80vh]">
+        <p className="text-red-600 text-xl">Failed to load brand details ❌</p>
+      </div>
+    );
   }
 }

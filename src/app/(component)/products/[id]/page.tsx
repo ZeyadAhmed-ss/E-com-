@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { getProductById } from "../../../../Api/productD.api";
@@ -13,27 +13,31 @@ import { getWishlist } from "../../../../Api/wishlist/getWishlist.api";
 import { useWishlist } from "@/src/context/wishlistContext";
 
 import { toast } from "sonner";
-import { Root, Data } from "../../../interface/productD.interface";
+import { Root, ProductData } from "../../../interface/productD.interface";
 
 interface ProductDetailProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
 export default function ProductDetail({ params }: ProductDetailProps) {
-  const { id } = use(params);
+  const { id } = params;
 
-  const [product, setProduct] = useState<Data | null>(null);
+  const [product, setProduct] = useState<ProductData | null>(null);
   const [loading, setLoading] = useState(true);
   const [inWishlist, setInWishlist] = useState(false);
-
 
   const { addItem, removeItem } = useWishlist();
 
   useEffect(() => {
     async function fetchProduct() {
-      const data: Root = await getProductById(id);
-      setProduct(data.data); 
-      setLoading(false);
+      try {
+        const data: Root = await getProductById(id);
+        setProduct(data.data); // هنا data.data = ProductData
+      } catch (error) {
+        console.error("Failed to fetch product:", error);
+      } finally {
+        setLoading(false);
+      }
     }
     fetchProduct();
   }, [id]);
@@ -41,7 +45,7 @@ export default function ProductDetail({ params }: ProductDetailProps) {
   useEffect(() => {
     const checkWishlist = async () => {
       const data = await getWishlist();
-      if (data?.data?.some((item: { _id: string; }) => item._id === id)) {
+      if (data?.data?.some((item: { _id: string }) => item._id === id)) {
         setInWishlist(true);
       }
     };
@@ -53,18 +57,19 @@ export default function ProductDetail({ params }: ProductDetailProps) {
       await removeFromWishlist(id);
       removeItem(id);
       setInWishlist(false);
-      toast.error("Removed from Wishlist ❌");
+      toast.error("Removed from Wishlist ❌", { duration: 2000 });
     } else {
       await addToWishlist(id);
       if (product) addItem(product);
       setInWishlist(true);
-      toast.success("Added to Wishlist ✅");
+      toast.success("Added to Wishlist ✅", { duration: 2000 });
     }
   };
 
   if (loading)
     return (
       <div className="container w-[70%] mx-auto my-40">
+        {/* Skeleton Loader */}
         <div className="flex flex-col md:flex-row gap-10 items-center">
           <div className="flex-1 flex justify-center">
             <div className="w-full max-w-md h-[400px] bg-gray-200 animate-pulse rounded-3xl" />

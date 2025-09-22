@@ -1,6 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { JWTPayload } from "../app/interface/next-auth"; 
 
 export const authOptions: NextAuthOptions = {
   pages: { signIn: "/signin" },
@@ -22,12 +23,14 @@ export const authOptions: NextAuthOptions = {
         if (!response.ok) return null;
 
         const payload = await response.json();
-        const decoded: any = jwtDecode(payload.token);
+
+        // ✅ استخدم الـ interface بدل any
+        const decoded = jwtDecode<JWTPayload>(payload.token);
 
         return {
-          id: decoded.id || decoded.sub,
-          name: decoded.name || payload.user?.name,
-          email: payload.user?.email,
+          id: decoded.id || decoded.sub || "",
+          name: decoded.name || payload.user?.name || "",
+          email: decoded.email || payload.user?.email || "",
           role: decoded.role || payload.user?.role || "user",
           token: payload.token,
         };
