@@ -8,6 +8,7 @@ export interface ProductData {
   subcategory: Subcategory[];
   ratingsQuantity: number;
   _id: string;
+  id: string; 
   title: string;
   slug: string;
   description: string;
@@ -21,7 +22,6 @@ export interface ProductData {
   updatedAt: string;
   __v: number;
   reviews: any[];
-  id: string;
 }
 
 export interface Subcategory {

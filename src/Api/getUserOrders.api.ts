@@ -1,7 +1,8 @@
 "use server";
 import getMyToken from "@/src/utilities/getMyToken";
+import { Order } from "../app/interface/order.interface";
 
-export async function getUserOrders() {
+export async function getUserOrders(): Promise<Order[]> {
   try {
     const token: any = await getMyToken();
     if (!token || !token.id) return [];
@@ -21,7 +22,9 @@ export async function getUserOrders() {
     if (!res.ok) return [];
 
     const data = await res.json();
-    return Array.isArray(data) ? data : [data];
+    const orders: Order[] = Array.isArray(data) ? data : [data];
+
+    return orders;
   } catch (err) {
     console.error("Error fetching user orders:", err);
     return [];

@@ -60,7 +60,23 @@ export default function ProductDetail({ params }: ProductDetailProps) {
       toast.error("Removed from Wishlist ❌", { duration: 2000 });
     } else {
       await addToWishlist(id);
-      if (product) addItem(product);
+      if (product) {
+        addItem({
+          _id: product._id,
+          product: {
+            _id: product._id,
+            title: product.title,
+            imageCover: product.imageCover,
+            category: product.category,
+            brand: product.brand,
+            ratingsAverage: product.ratingsAverage,
+            price: product.price,
+          },
+          price: product.price,
+          imageCover: product.imageCover,
+        });
+      }
+
       setInWishlist(true);
       toast.success("Added to Wishlist ✅", { duration: 2000 });
     }
@@ -120,7 +136,9 @@ export default function ProductDetail({ params }: ProductDetailProps) {
           <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">
             {product.title}
           </h1>
-          <p className="text-lg text-gray-700 leading-relaxed">{product.description}</p>
+          <p className="text-lg text-gray-700 leading-relaxed">
+            {product.description}
+          </p>
           <div className="flex items-center gap-4 text-xl font-semibold">
             <span className="text-gray-900">Price:</span>
             <span className="text-purple-600">{product.price} EGP</span>
