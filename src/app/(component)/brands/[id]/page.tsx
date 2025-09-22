@@ -1,18 +1,19 @@
-import React, { JSX } from "react";
+import React from "react";
 import Link from "next/link";
 import { BrandResponse, ProductsResponse, Product } from "../../../interface/brands.interface";
 
+// تعريف interface للـ props
 interface BrandDetailPageProps {
   params: {
     id: string;
   };
 }
 
-export default async function BrandDetail({ params }: BrandDetailPageProps): Promise<JSX.Element> {
+export default async function BrandDetail({ params }: BrandDetailPageProps) {
   const { id } = params;
 
   try {
-    // Get brand details
+    // جلب تفاصيل الـ Brand
     const brandRes = await fetch(`https://ecommerce.routemisr.com/api/v1/brands/${id}`, {
       cache: "no-cache",
     });
@@ -20,18 +21,19 @@ export default async function BrandDetail({ params }: BrandDetailPageProps): Pro
     const brandData: BrandResponse = await brandRes.json();
     const brand = brandData.data;
 
-    // Get products of this brand
+    // جلب منتجات الـ Brand
     const productsRes = await fetch(`https://ecommerce.routemisr.com/api/v1/products?brand=${id}`, {
       cache: "no-cache",
     });
     if (!productsRes.ok) throw new Error("Failed to fetch products");
     const productsData: ProductsResponse = await productsRes.json();
-    const products = productsData.data || [];
+    const products: Product[] = productsData.data || [];
 
     return (
       <div className="container w-[80%] mx-auto my-32">
         {/* Brand Info */}
         <div className="flex flex-col md:flex-row gap-10 items-center mb-16">
+          {/* Brand Image */}
           <div className="flex-1 flex justify-center">
             <div className="w-full max-w-md rounded-3xl overflow-hidden shadow-xl border border-gray-200 hover:shadow-lg transition duration-300">
               <img
@@ -41,19 +43,24 @@ export default async function BrandDetail({ params }: BrandDetailPageProps): Pro
               />
             </div>
           </div>
+
+          {/* Brand Info Text */}
           <div className="flex-1 space-y-4">
             <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">
               {brand.name}
             </h1>
             <p className="text-lg text-gray-700 leading-relaxed">
-              Explore all products from <span className="font-semibold">{brand.name}</span>.
+              Explore all products from{" "}
+              <span className="font-semibold">{brand.name}</span>.
             </p>
+
             <p className="text-gray-700">
               Created on:{" "}
               <span className="font-medium text-gray-900">
                 {new Date(brand.createdAt).toLocaleDateString()}
               </span>
             </p>
+
             <div className="flex gap-4 mt-6">
               <Link
                 href="/brands"
@@ -72,15 +79,20 @@ export default async function BrandDetail({ params }: BrandDetailPageProps): Pro
           <h2 className="text-4xl font-extrabold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">
             {brand.name} Products
           </h2>
+
           {products.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-              {products.map((product: Product) => (
+              {products.map((product) => (
                 <Link
                   key={product._id}
                   href={`/products/${product._id}`}
                   className="rounded-2xl overflow-hidden border border-gray-200 shadow-md hover:shadow-xl hover:scale-[1.02] transition duration-300"
                 >
-                  <img src={product.imageCover} alt={product.title} className="w-full h-56 object-cover" />
+                  <img
+                    src={product.imageCover}
+                    alt={product.title}
+                    className="w-full h-56 object-cover"
+                  />
                   <div className="p-4 space-y-2">
                     <h3 className="font-semibold text-lg line-clamp-1">{product.title}</h3>
                     <div className="flex items-center justify-between">
