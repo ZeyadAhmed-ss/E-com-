@@ -1,22 +1,24 @@
-"use client"
+// src/app/(component)/brands/[id]/page.tsx
 import React from "react";
 import Link from "next/link";
-import { BrandResponse, ProductsResponse, Product } from "../../../interface/brands.interface";
+import {
+  BrandResponse,
+  ProductsResponse,
+  Product,
+  BrandDetailPageProps,
+} from "../../../interface/brands.interface";
 
-// Page Props
-interface BrandDetailPageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function BrandDetail({ params }: BrandDetailPageProps) {
+export default async function BrandDetail({
+  params,
+  searchParams,
+}: BrandDetailPageProps) {
   const { id } = params;
 
   // جلب بيانات الـ Brand
-  const brandRes = await fetch(`https://ecommerce.routemisr.com/api/v1/brands/${id}`, {
-    cache: "no-store",
-  });
+  const brandRes = await fetch(
+    `https://ecommerce.routemisr.com/api/v1/brands/${id}`,
+    { cache: "no-store" }
+  );
 
   if (!brandRes.ok) {
     return (
@@ -60,7 +62,8 @@ export default async function BrandDetail({ params }: BrandDetailPageProps) {
             {brand.name}
           </h1>
           <p className="text-lg text-gray-700 leading-relaxed">
-            Explore all products from <span className="font-semibold">{brand.name}</span>.
+            Explore all products from{" "}
+            <span className="font-semibold">{brand.name}</span>.
           </p>
           <p className="text-gray-700">
             Created on:{" "}
@@ -102,7 +105,9 @@ export default async function BrandDetail({ params }: BrandDetailPageProps) {
                   className="w-full h-56 object-cover"
                 />
                 <div className="p-4 space-y-2">
-                  <h3 className="font-semibold text-lg line-clamp-1">{product.title}</h3>
+                  <h3 className="font-semibold text-lg line-clamp-1">
+                    {product.title}
+                  </h3>
                   <div className="flex items-center justify-between">
                     <span className="text-xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 text-transparent bg-clip-text">
                       {product.price} EGP
@@ -118,7 +123,9 @@ export default async function BrandDetail({ params }: BrandDetailPageProps) {
             ))}
           </div>
         ) : (
-          <p className="text-center text-gray-600">No products found for this brand.</p>
+          <p className="text-center text-gray-600">
+            No products found for this brand.
+          </p>
         )}
       </div>
     </div>

@@ -1,3 +1,6 @@
+// brands.interface.ts
+
+// Brand
 export interface Brand {
   _id: string;
   name: string;
@@ -7,11 +10,13 @@ export interface Brand {
   updatedAt: string;
 }
 
+// Response من API لبراند واحد
 export interface BrandResponse {
   status: string;
   data: Brand;
 }
 
+// Product
 export interface Product {
   _id: string;
   title: string;
@@ -38,8 +43,26 @@ export interface Product {
   updatedAt: string;
 }
 
+// Response من API لمنتجات
 export interface ProductsResponse {
   status: string;
   results: number;
   data: Product[];
+}
+
+// Response من API لبراندات كثيرة
+export interface BrandsResponse {
+  status: string;
+  results: number;
+  data: Brand[];
+}
+
+// Props لصفحة App Router (صفحة ديناميكية)
+export interface BrandDetailPageProps {
+  params: {
+    id: string;
+  };
+  searchParams?: {
+    [key: string]: string | string[] | undefined;
+  };
 }
