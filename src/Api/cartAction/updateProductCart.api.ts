@@ -1,29 +1,36 @@
-"use server"
+"use server";
 import getMyToken from "@/src/utilities/getMyToken";
 
-export async function UpdateProductToCart(id:string,countNumber:number) {
+export async function UpdateProductToCart(id: string, countNumber: number) {
+  const token = await getMyToken();
 
-    const token = await getMyToken();
-    const payload = {
-        count: countNumber,}
+  if (!token) {
+    return { success: false, message: "Unauthorized: No token found" };
+  }
 
+  const payload = {
+    count: countNumber,
+  };
 
-        const headers = {
-            token: token,
-            "Content-Type": "application/json",
-        }
+  const headers = {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token.token}`, // ✅ التعديل هنا
+  };
 
-if(token){
-          const res =await fetch(`https://ecommerce.routemisr.com/api/v1/cart/${id}`, 
-            {
-            method: "PUT",
-            headers: headers,
-            body: JSON.stringify(payload),
-           }
-      )
-    
-      const data = await res.json();
-      return data;
+  try {
+    const res = await fetch(`https://ecommerce.routemisr.com/api/v1/cart/${id}`, {
+      method: "PUT",
+      headers,
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to update product: ${res.statusText}`);
+    }
+
+    const data = await res.json();
+    return data;
+  } catch {
+    return { success: false, message: "Something went wrong" };
+  }
 }
-}
-

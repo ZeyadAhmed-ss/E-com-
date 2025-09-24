@@ -1,7 +1,7 @@
-import { jwtDecode } from "jwt-decode";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { JWTPayload } from "../app/interface/next-auth"; 
+import { jwtDecode } from "jwt-decode";
+import { JWTPayload } from "@/src/app/interface/next-auth";
 
 export const authOptions: NextAuthOptions = {
   pages: { signIn: "/signin" },
@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
       name: "Credentials",
       credentials: { email: {}, password: {} },
       authorize: async (credentials) => {
-        const response = await fetch(`${process.env.API}/api/v1/auth/signin`, {
+        const res = await fetch(`${process.env.API}/api/v1/auth/signin`, {
           method: "POST",
           body: JSON.stringify({
             email: credentials?.email,
@@ -20,11 +20,9 @@ export const authOptions: NextAuthOptions = {
           headers: { "Content-Type": "application/json" },
         });
 
-        if (!response.ok) return null;
+        if (!res.ok) return null;
 
-        const payload = await response.json();
-
-        // ✅ استخدم الـ interface بدل any
+        const payload = await res.json();
         const decoded = jwtDecode<JWTPayload>(payload.token);
 
         return {
@@ -65,4 +63,4 @@ export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
 };
 
-export default NextAuth(authOptions);
+

@@ -1,17 +1,17 @@
 "use server";
 import getMyToken from "@/src/utilities/getMyToken";
-import { GetCartResponse } from "../../app/interface/getLoggedUserCart"; // حط الـ interfaces في ملف types/cart.ts
+import { GetCartResponse } from "../../app/interface/getLoggedUserCart";
 
 export async function getLoggedUserCart(): Promise<GetCartResponse | null> {
   try {
     const token = await getMyToken();
     if (!token) {
-      throw new Error("No token found. Please login first.");
+      throw new Error("Unauthorized: No token found");
     }
 
     const headers = {
-      token: token,
       "Content-Type": "application/json",
+      "Authorization": `Bearer ${token.token}`, 
     };
 
     const res = await fetch(`https://ecommerce.routemisr.com/api/v1/cart`, {

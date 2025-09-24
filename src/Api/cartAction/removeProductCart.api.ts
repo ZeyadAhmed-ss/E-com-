@@ -9,8 +9,8 @@ export async function removeProductToCart(id: string) {
   }
 
   const headers = {
-    token: token,
     "Content-Type": "application/json",
+    "Authorization": `Bearer ${token.token}`, 
   };
 
   try {
@@ -29,7 +29,6 @@ export async function removeProductToCart(id: string) {
     const data = await res.json();
     return data;
   } catch {
-  return { success: false, message: "Something went wrong" };
-}
-
+    return { success: false, message: "Something went wrong" };
+  }
 }

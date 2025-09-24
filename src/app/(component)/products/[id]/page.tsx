@@ -13,10 +13,10 @@ import { getWishlist } from "../../../../Api/wishlist/getWishlist.api";
 import { useWishlist } from "@/src/context/wishlistContext";
 
 import { toast } from "sonner";
-import { Root, ProductData } from "../../../interface/productD.interface";
+import { ProductData } from "../../../interface/productD.interface";
 
 interface ProductDetailProps {
-  params: { id: string };
+  params: { id: string }; 
 }
 
 export default function ProductDetail({ params }: ProductDetailProps) {
@@ -26,13 +26,15 @@ export default function ProductDetail({ params }: ProductDetailProps) {
   const [loading, setLoading] = useState(true);
   const [inWishlist, setInWishlist] = useState(false);
 
-  const { addItem, removeItem } = useWishlist();
+  const { wishlist, addItem, removeItem } = useWishlist();
+  
 
+  // جلب بيانات المنتج
   useEffect(() => {
     async function fetchProduct() {
       try {
-        const data: Root = await getProductById(id);
-        setProduct(data.data); 
+        const data = await getProductById(id); 
+        setProduct(data);
       } catch (error) {
         console.error("Failed to fetch product:", error);
       } finally {
@@ -42,42 +44,39 @@ export default function ProductDetail({ params }: ProductDetailProps) {
     fetchProduct();
   }, [id]);
 
+  // التحقق إذا المنتج موجود في الـ wishlist
   useEffect(() => {
-    const checkWishlist = async () => {
-      const data = await getWishlist();
-      if (data?.data?.some((item: { _id: string }) => item._id === id)) {
-        setInWishlist(true);
-      }
-    };
-    checkWishlist();
-  }, [id]);
+    if (wishlist.some((item) => item._id === id)) {
+      setInWishlist(true);
+    } else {
+      setInWishlist(false);
+    }
+  }, [wishlist, id]);
 
+  // toggle wishlist
   const toggleWishlist = async () => {
+    if (!product) return;
+
     if (inWishlist) {
       await removeFromWishlist(id);
       removeItem(id);
-      setInWishlist(false);
       toast.error("Removed from Wishlist ❌", { duration: 2000 });
     } else {
       await addToWishlist(id);
-      if (product) {
-        addItem({
+      addItem({
+        _id: product._id,
+        product: {
           _id: product._id,
-          product: {
-            _id: product._id,
-            title: product.title,
-            imageCover: product.imageCover,
-            category: product.category,
-            brand: product.brand,
-            ratingsAverage: product.ratingsAverage,
-            price: product.price,
-          },
-          price: product.price,
+          title: product.title,
           imageCover: product.imageCover,
-        });
-      }
-
-      setInWishlist(true);
+          category: product.category,
+          brand: product.brand,
+          ratingsAverage: product.ratingsAverage,
+          price: product.price,
+        },
+        price: product.price,
+        imageCover: product.imageCover,
+      });
       toast.success("Added to Wishlist ✅", { duration: 2000 });
     }
   };
@@ -85,7 +84,6 @@ export default function ProductDetail({ params }: ProductDetailProps) {
   if (loading)
     return (
       <div className="container w-[70%] mx-auto my-40">
-        {/* Skeleton Loader */}
         <div className="flex flex-col md:flex-row gap-10 items-center">
           <div className="flex-1 flex justify-center">
             <div className="w-full max-w-md h-[400px] bg-gray-200 animate-pulse rounded-3xl" />
@@ -101,7 +99,7 @@ export default function ProductDetail({ params }: ProductDetailProps) {
       </div>
     );
 
-  if (!product) return <p>Failed to load product</p>;
+  if (!product) return <p className="text-center mt-20">Failed to load product</p>;
 
   return (
     <div className="container w-[70%] mx-auto my-36">
@@ -136,20 +134,15 @@ export default function ProductDetail({ params }: ProductDetailProps) {
           <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">
             {product.title}
           </h1>
-          <p className="text-lg text-gray-700 leading-relaxed">
-            {product.description}
-          </p>
+          <p className="text-lg text-gray-700 leading-relaxed">{product.description}</p>
           <div className="flex items-center gap-4 text-xl font-semibold">
             <span className="text-gray-900">Price:</span>
             <span className="text-purple-600">{product.price} EGP</span>
           </div>
           <p className="text-gray-700">
             Category:{" "}
-            <span className="font-medium text-gray-900">
-              {product.category?.name}
-            </span>
+            <span className="font-medium text-gray-900">{product.category?.name}</span>
           </p>
-
           <div className="flex items-center gap-2">
             <span className="text-gray-900 font-medium">
               <i className="fas fa-star text-yellow-400 mr-1"></i>

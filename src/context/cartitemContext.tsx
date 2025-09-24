@@ -1,37 +1,43 @@
 "use client";
-import React, { createContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
+import { Product } from "../app/interface/cart.interface";
 import { getLoggedUserCart } from "@/src/Api/cartAction/getLoggedUserCart.api";
+import { CartItem } from "../app/interface/getLoggedUserCart";
 
-// Interface للـ context value
 interface CartContextType {
-  dataDetails: number;
-  setDetails: React.Dispatch<React.SetStateAction<number>>;
+  cartList: Product[];
+  totalCartPrice: number;
   getDetails: () => Promise<void>;
 }
 
-// Context بقيمة افتراضية undefined علشان نعرف نعمل useContext بشكل آمن
-export const CartItemContext = createContext<CartContextType | undefined>(undefined);
+export const CartItemContext = createContext<CartContextType | null>(null);
 
-export function CartContextProvider({ children }: { children: React.ReactNode }) {
-  const [dataDetails, setDetails] = useState<number>(0);
+export const CartContextProvider = ({ children }: { children: ReactNode }) => {
+  const [cartList, setCartList] = useState<CartItem[]>([]);
+  const [totalCartPrice, setTotalCartPrice] = useState(0);
 
-  async function getDetails() {
-    try {
-      const res = await getLoggedUserCart();
-      setDetails(res?.numOfCartItems ?? 0);
-    } catch (err) {
-      console.error("Error fetching cart details:", err);
-      setDetails(0);
+  const getDetails = async () => {
+    const res = await getLoggedUserCart();
+    if (res?.data) {
+      setCartList(res.data.products);
+      setTotalCartPrice(res.data.totalCartPrice);
+      setList(res.data.products);
     }
-  }
-
-  useEffect(() => {
-    getDetails();
-  }, []);
+  };
 
   return (
-    <CartItemContext.Provider value={{ dataDetails, setDetails, getDetails }}>
+    <CartItemContext.Provider value={{ cartList, totalCartPrice, getDetails }}>
       {children}
     </CartItemContext.Provider>
   );
+};
+
+export const useCart = () => {
+  const context = useContext(CartItemContext);
+  if (!context) throw new Error("CartItemContext not found");
+  return context;
+};
+function setList(products: CartItem[]) {
+  throw new Error("Function not implemented.");
 }
+

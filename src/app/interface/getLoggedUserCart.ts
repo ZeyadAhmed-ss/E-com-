@@ -14,6 +14,7 @@ export interface CartItem {
 
 // الـ Cart نفسها
 export interface Cart {
+  [x: string]: SetStateAction<number>;
   _id: string;
   cartOwner: string;
   products: CartItem[];
@@ -23,6 +24,7 @@ export interface Cart {
 
 // الـ Response اللي بيجي من الـ API
 export interface GetCartResponse {
+  [x: string]: SetStateAction<string>;
   status: string;
   numOfCartItems: number;
   data: Cart;

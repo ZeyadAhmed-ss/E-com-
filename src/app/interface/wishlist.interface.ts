@@ -1,5 +1,3 @@
-// PostWishlist.interface.ts
-
 export interface Category {
   _id: string;
   name: string;
@@ -15,6 +13,7 @@ export interface Brand {
 export interface Product {
   _id: string;
   title: string;
+  description: string; 
   imageCover: string;
   category: Category;
   brand: Brand;
@@ -35,7 +34,6 @@ export interface WishlistResponse {
   count: number;
   data: WishlistItem[];
 }
-
 
 export interface AddToWishlistRequest {
   productId: string;
