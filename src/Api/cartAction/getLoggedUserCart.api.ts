@@ -11,7 +11,7 @@ export async function getLoggedUserCart(): Promise<GetCartResponse | null> {
 
     const headers = {
       "Content-Type": "application/json",
-      token: `${token.token}`, 
+      Authorization: `Bearer ${token.token}`,
     };
 
     const res = await fetch(`https://ecommerce.routemisr.com/api/v1/cart`, {

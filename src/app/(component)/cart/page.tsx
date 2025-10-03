@@ -134,8 +134,27 @@ export default function Cart() {
     );
   }
 
-  if (cartList.length === 0)
-    return <p className="text-center py-20 text-lg">Your cart is empty 🫣</p>;
+  if (!loading && cartList.length === 0) {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen px-6">
+      <div className="bg-white/90 backdrop-blur-md p-12 rounded-3xl shadow-2xl text-center max-w-lg w-full">
+        <h2 className="text-4xl font-extrabold text-gray-800 mb-4">
+          Your cart is empty 🫣
+        </h2>
+        <p className="text-gray-500 mb-8">
+          Looks like you haven’t added anything yet.
+        </p>
+        <a
+          href="/home"
+          className="inline-block px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-lg font-semibold rounded-2xl shadow hover:opacity-90 transition"
+        >
+          🛍️ Start Shopping
+        </a>
+      </div>
+    </div>
+  );
+}
+
 
   return (
     <div className="max-w-7xl mx-auto px-10 py-36">
