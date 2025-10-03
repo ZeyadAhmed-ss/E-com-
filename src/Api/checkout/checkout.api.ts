@@ -9,11 +9,8 @@ export async function onlinePayment(formValues: ICheckout, cartId: string) {
     throw new Error("No token found. Please login first.");
   }
 
-  const baseUrl =
-    process.env.NEXTAUTH_URL || "http://localhost:3000";
-
   const res = await fetch(
-    `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=${baseUrl}`,
+    `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=http://localhost:3000`,
     {
       method: "POST",
       headers: {
