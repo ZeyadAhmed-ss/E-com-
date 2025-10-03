@@ -229,7 +229,7 @@ export default function Navbar() {
                 className="px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
                 onClick={() => setMenuOpen(false)}
               >
-                <i className="fas fa-sign-in-alt"></i> Sign In
+                <i className="fas fa-sign-in-alt"></i> sign In
               </Link>
             </div>
           )}
