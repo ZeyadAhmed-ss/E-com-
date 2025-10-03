@@ -28,7 +28,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2 text-xl sm:text-2xl font-extrabold text-indigo-700 tracking-wide cursor-pointer hover:scale-105 transition-transform duration-300">
           <i className="fas fa-shopping-cart bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent"></i>
           <span className="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
-            FreshCart
+            freshCart
           </span>
         </div>
 
