@@ -1,28 +1,23 @@
-// utilities/getMyToken.ts
-import { cookies } from "next/headers";
-import { jwtDecode } from "jwt-decode";
-import { UserToken } from "../app/interface/Token.interface";
+"use server"
+import { cookies } from 'next/headers';
+import { decode } from 'next-auth/jwt';
 
-export default async function getMyToken(): Promise<UserToken | null> {
-  try {
-    const tokenValue =
-      (await cookies()).get("next-auth.session-token")?.value ||
-      (await cookies()).get("_Secure-next-auth.session-token")?.value;
-
-    if (!tokenValue) return null;
-
-    const decoded = jwtDecode(tokenValue) as { id: string; name?: string; email?: string; role?: string };
-    if (!decoded || !decoded.id) return null;
-
-    return {
-      id: decoded.id,
-      name: decoded.name,
-      email: decoded.email,
-      role: decoded.role,
-      token: tokenValue,
-    };
-  } catch (err) {
-    console.error("Error decoding token:", err);
-    return null;
-  }
+export default async function getMyToken() {
+    try {
+        const cookieStore = await cookies();
+        const decodedToken = cookieStore.get('next-auth.session-token')?.value;
+        
+        if (!decodedToken) {
+            return null;
+        }
+        
+        const token = await decode({
+            token: decodedToken,
+            secret: process.env.NEXTAUTH_SECRET!
+        });
+        
+        return token;
+    } catch (err) {
+        return null;
+    }
 }

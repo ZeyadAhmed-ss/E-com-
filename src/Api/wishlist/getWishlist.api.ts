@@ -12,7 +12,7 @@ export async function getWishlist(): Promise<WishlistResponse> {
     const res = await fetch("https://ecommerce.routemisr.com/api/v1/wishlist", {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${token.token}`, 
+        token: `${token}`, 
         "Content-Type": "application/json",
       },
     });

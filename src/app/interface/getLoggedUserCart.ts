@@ -1,5 +1,6 @@
 // المنتج
 export interface Product {
+  [x: string]: any;
   _id: string;
   title: string;
   imageCover: string;
@@ -14,12 +15,12 @@ export interface CartItem {
 
 // الـ Cart نفسها
 export interface Cart {
-  [x: string]: SetStateAction<number>;
   _id: string;
   cartOwner: string;
   products: CartItem[];
   createdAt: string;
   updatedAt: string;
+  totalCartPrice: number; // لو API بيرجع السعر الإجمالي
 }
 
 // الـ Response اللي بيجي من الـ API

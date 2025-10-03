@@ -7,14 +7,14 @@ export async function removeFromWishlist(
 ): Promise<WishlistResponse | null> {
   try {
     const token = await getMyToken();
-    if (!token?.token) return null; // نتأكد إن فيه token
+    if (!token?.token) return null; 
 
     const res = await fetch(
       `https://ecommerce.routemisr.com/api/v1/wishlist/${productId}`,
       {
         method: "DELETE",
         headers: {
-          "Authorization": `Bearer ${token.token}`, 
+          token: `${token}`, 
           "Content-Type": "application/json",
         },
       }

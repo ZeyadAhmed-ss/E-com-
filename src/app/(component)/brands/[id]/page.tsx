@@ -11,8 +11,10 @@ import {
 export default async function BrandDetail({
   params,
   searchParams,
-}: BrandDetailPageProps) {
-  const { id } = params;
+}: PageProps<'/brands/[id]'>) {
+  const { id } = await params;
+const { someQueryParam } = await searchParams;
+
 
   // جلب بيانات الـ Brand
   const brandRes = await fetch(

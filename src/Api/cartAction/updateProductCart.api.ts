@@ -14,7 +14,7 @@ export async function UpdateProductToCart(id: string, countNumber: number) {
 
   const headers = {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${token.token}`, // ✅ التعديل هنا
+    token: `${token.token}`, 
   };
 
   try {

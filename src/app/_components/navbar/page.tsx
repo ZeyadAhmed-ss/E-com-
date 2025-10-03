@@ -1,17 +1,20 @@
 "use client";
-import { CartItemContext } from "@/src/context/cartitemContext";
+import { useCart } from "@/src/context/cartitemContext";
 import { useWishlist } from "@/src/context/wishlistContext";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const { dataDetails } = useContext(CartItemContext);
+  const { cartList } = useCart();
   const { wishlistCount } = useWishlist();
+
+  // حساب مجموع العناصر في الكارت
+  const totalCartItems = cartList.reduce((acc, item) => acc + item.count, 0);
 
   const handleSignOut = async () => {
     setIsLoggingOut(true);
@@ -73,9 +76,9 @@ export default function Navbar() {
             className="relative text-2xl text-gray-600 hover:text-indigo-500 transition-colors duration-300"
           >
             <i className="fas fa-shopping-basket"></i>
-            {dataDetails > 0 && (
+            {totalCartItems > 0 && (
               <span className="absolute -top-2 -right-3 bg-indigo-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-md">
-                {dataDetails}
+                {totalCartItems}
               </span>
             )}
           </Link>
@@ -173,9 +176,9 @@ export default function Navbar() {
               onClick={() => setMenuOpen(false)}
             >
               <i className="fas fa-shopping-basket"></i>
-              {dataDetails > 0 && (
+              {totalCartItems > 0 && (
                 <span className="absolute -top-2 -right-3 bg-indigo-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-md">
-                  {dataDetails}
+                  {totalCartItems}
                 </span>
               )}
             </Link>

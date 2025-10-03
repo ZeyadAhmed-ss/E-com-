@@ -1,4 +1,4 @@
-// getAllBrands.api.ts
+// src/Api/brands/getAllBrands.api.ts
 import { BrandsResponse } from "../app/interface/brands.interface";
 
 export default async function getAllBrands(): Promise<BrandsResponse | null> {
@@ -9,7 +9,6 @@ export default async function getAllBrands(): Promise<BrandsResponse | null> {
 
     if (!res.ok) throw new Error("Failed to fetch brands");
 
-    // TypeScript هيأكد إن البيانات مطابقة للـ interface
     const data: BrandsResponse = await res.json();
     return data;
   } catch (error) {

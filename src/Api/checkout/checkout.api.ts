@@ -1,12 +1,10 @@
 "use server";
-import { ICheckout, CheckoutResponse } from "@/src/app/interface/online.interface";
+import { ICheckout } from "@/src/app/interface/online.interface";
 import getMyToken from "@/src/utilities/getMyToken";
 
-export async function onlinePayment(
-  formValues: ICheckout,
-  cartId: string
-): Promise<CheckoutResponse> {
+export async function onlinePayment(formValues: ICheckout, cartId: string) {
   const token = await getMyToken();
+
   if (!token) {
     throw new Error("No token found. Please login first.");
   }
@@ -16,7 +14,7 @@ export async function onlinePayment(
     {
       method: "POST",
       headers: {
-        token,
+        token: `${token.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ shippingAddress: formValues }),
@@ -27,6 +25,6 @@ export async function onlinePayment(
     throw new Error(`Failed to create checkout session: ${res.statusText}`);
   }
 
-  const payload: CheckoutResponse = await res.json();
+  const payload = await res.json();
   return payload;
 }

@@ -13,17 +13,25 @@ interface CartContextType {
 export const CartItemContext = createContext<CartContextType | null>(null);
 
 export const CartContextProvider = ({ children }: { children: ReactNode }) => {
-  const [cartList, setCartList] = useState<CartItem[]>([]);
+  const [cartList, setCartList] = useState<Product[]>([]); 
   const [totalCartPrice, setTotalCartPrice] = useState(0);
 
   const getDetails = async () => {
-    const res = await getLoggedUserCart();
-    if (res?.data) {
-      setCartList(res.data.products);
-      setTotalCartPrice(res.data.totalCartPrice);
-      setList(res.data.products);
-    }
-  };
+  const res = await getLoggedUserCart();
+  if (res?.data) {
+    const products: Product[] = res.data.products.map((item: any) => ({
+      _id: item._id,
+      count: item.count,
+      price: item.price,
+      product: item.product,
+    }));
+
+    setCartList(products);
+    setTotalCartPrice(res.data.totalCartPrice);
+  }
+};
+
+
 
   return (
     <CartItemContext.Provider value={{ cartList, totalCartPrice, getDetails }}>

@@ -33,14 +33,11 @@ export default function Checkout() {
 
   const onSubmit = async (values: z.infer<typeof checkoutSchema>) => {
     const data = await onlinePayment(values,id);
-    console.log(data);
     if (data.status === 'success') {
       toast.success("✅ Checkout data submitted successfully!");
       sessionStorage.setItem("checkoutUserId", id);
       window.location.href = data.session.url;
-
     }
-    
   };
 
   useEffect(() => {

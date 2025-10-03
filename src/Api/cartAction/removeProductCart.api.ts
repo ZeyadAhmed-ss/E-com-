@@ -10,7 +10,7 @@ export async function removeProductToCart(id: string) {
 
   const headers = {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${token.token}`, 
+    token: `${token.token}`, 
   };
 
   try {

@@ -7,7 +7,6 @@ import Image from "next/image";
 
 export default function AllOrdersPage() {
   const { data: session, status } = useSession();
-
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,14 +25,34 @@ export default function AllOrdersPage() {
   // Skeleton Loader
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-[80vh] gap-6">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8 my-20 space-y-12">
         {[1, 2, 3].map((_, idx) => (
           <div
             key={idx}
-            className="w-full max-w-4xl h-64 rounded-2xl bg-gray-200 animate-pulse"
-          ></div>
+            className="border rounded-3xl p-6 shadow-md bg-white animate-pulse space-y-4"
+          >
+            <div className="flex justify-between items-center mb-4">
+              <div className="h-6 w-40 bg-gray-200 rounded"></div>
+              <div className="h-6 w-20 bg-gray-200 rounded"></div>
+            </div>
+            <div className="h-4 w-32 bg-gray-200 rounded mb-2"></div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-3 p-3 border rounded-xl"
+                >
+                  <div className="w-16 h-16 bg-gray-200 rounded object-cover"></div>
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="h-3 w-40 bg-gray-200 rounded"></div>
+          </div>
         ))}
-        <p className="text-gray-600 text-xl animate-pulse">Loading orders...</p>
       </div>
     );
   }
@@ -48,7 +67,7 @@ export default function AllOrdersPage() {
 
   return (
     <div className="container mx-auto px-4 md:px-6 lg:px-8 my-20 space-y-12">
-      <h1 className="text-4xl font-bold text-center text-gray-800">
+      <h1 className="text-5xl font-extrabold mb-20 text-center bg-gradient-to-r from-pink-500 via-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight">
         My Orders
       </h1>
 
@@ -80,7 +99,6 @@ export default function AllOrdersPage() {
               </span>
             </p>
 
-            {/* Products inside order */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
               {order.cartItems.map((item) => (
                 <div
