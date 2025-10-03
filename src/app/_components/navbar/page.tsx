@@ -114,10 +114,10 @@ export default function Navbar() {
           ) : (
             <div className="flex items-center gap-4">
               <Link
-                href="/register"
+                href="/signup"
                 className="px-5 py-2 bg-gradient-to-r from-green-500 to-teal-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2"
               >
-                <i className="fas fa-user-plus"></i> Register
+                <i className="fas fa-user-plus"></i> sign up
               </Link>
               <Link
                 href="/signin"
@@ -218,11 +218,11 @@ export default function Navbar() {
           ) : (
             <div className="flex flex-col gap-3">
               <Link
-                href="/register"
+                href="/signup"
                 className="px-4 py-2 bg-gradient-to-r from-green-500 to-teal-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
                 onClick={() => setMenuOpen(false)}
               >
-                <i className="fas fa-user-plus"></i> Register
+                <i className="fas fa-user-plus"></i> signup
               </Link>
               <Link
                 href="/signin"
