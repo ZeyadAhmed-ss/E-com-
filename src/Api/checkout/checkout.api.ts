@@ -9,25 +9,23 @@ export async function onlinePayment(formValues: ICheckout, cartId: string) {
     throw new Error("No token found. Please login first.");
   }
 
-  // هنا بنجيب الـ baseUrl من الـ env
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    process.env.NEXTAUTH_URL ||
-    "http://localhost:3000";
+  
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+if (!baseUrl) {
+  throw new Error("Base URL is not defined in env variables.");
+}
 
-  const res = await fetch(
-    `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=${encodeURIComponent(
-      baseUrl
-    )}`,
-    {
-      method: "POST",
-      headers: {
-        token: `${token.token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ shippingAddress: formValues }),
-    }
-  );
+const res = await fetch(
+  `${process.env.NEXT_PUBLIC_API_URL}/orders/checkout-session/${cartId}?url=${encodeURIComponent(baseUrl)}`,
+  {
+    method: "POST",
+    headers: {
+      token: `${token.token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ shippingAddress: formValues }),
+  }
+);
 
   if (!res.ok) {
     throw new Error(`Failed to create checkout session: ${res.status} ${res.statusText}`);
