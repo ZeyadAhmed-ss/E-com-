@@ -9,12 +9,16 @@ export async function onlinePayment(formValues: ICheckout, cartId: string) {
     throw new Error("No token found. Please login first.");
   }
 
-  // هنا بتحدد الـ URL على حسب انت شغال local ولا Vercel
+  // هنا بنجيب الـ baseUrl من الـ env
   const baseUrl =
-    process.env.NEXTAUTH_URL || "http://localhost:3000";
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    process.env.NEXTAUTH_URL ||
+    "http://localhost:3000";
 
   const res = await fetch(
-    `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=${baseUrl}`,
+    `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=${encodeURIComponent(
+      baseUrl
+    )}`,
     {
       method: "POST",
       headers: {
@@ -26,7 +30,7 @@ export async function onlinePayment(formValues: ICheckout, cartId: string) {
   );
 
   if (!res.ok) {
-    throw new Error(`Failed to create checkout session: ${res.statusText}`);
+    throw new Error(`Failed to create checkout session: ${res.status} ${res.statusText}`);
   }
 
   const payload = await res.json();
