@@ -25,19 +25,26 @@ export default function Navbar() {
     <nav className="w-full bg-white shadow-md fixed top-0 left-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center gap-2 text-xl sm:text-2xl font-extrabold text-indigo-700 tracking-wide cursor-pointer hover:scale-105 transition-transform duration-300">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-xl sm:text-2xl font-extrabold text-indigo-700 tracking-wide cursor-pointer hover:scale-105 transition-transform duration-300"
+        >
           <i className="fas fa-shopping-cart bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent"></i>
           <span className="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
             FreshCart
           </span>
-        </div>
+        </Link>
 
         {/* Hamburger Icon (Mobile) */}
         <div
           className="lg:hidden text-2xl text-gray-700 cursor-pointer"
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          {menuOpen ? <i className="fas fa-times"></i> : <i className="fas fa-bars"></i>}
+          {menuOpen ? (
+            <i className="fas fa-times"></i>
+          ) : (
+            <i className="fas fa-bars"></i>
+          )}
         </div>
 
         {/* Desktop Links */}

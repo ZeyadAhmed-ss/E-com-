@@ -8,7 +8,7 @@ export default async function Categories() {
   return (
     <div className="max-w-7xl mx-auto px-6 py-32">
       {/* Title */}
-      <h2 className="text-4xl font-extrabold text-center mb-12 bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent drop-shadow-sm">
+      <h2 className="text-4xl font-extrabold text-center mb-20 pb-2 bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent drop-shadow-sm">
         Explore Categories
       </h2>
 

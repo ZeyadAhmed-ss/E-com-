@@ -24,7 +24,7 @@ export default async function Brands() {
   return (
     <div className="container mx-auto my-32 px-6">
       {/* Title */}
-      <h1 className="text-4xl font-extrabold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">
+      <h1 className="text-4xl font-extrabold text-center mb-12 pb-2 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">
         Top Brands
       </h1>
 

@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { getUserOrders } from "@/src/Api/orders/getUserOrders.api";
 import { Order } from "../../interface/order.interface";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function AllOrdersPage() {
   const { data: session, status } = useSession();
@@ -22,14 +23,13 @@ export default function AllOrdersPage() {
     }
   }, [status, session]);
 
-  // Skeleton Loader
   if (loading) {
     return (
       <div className="container mx-auto px-4 md:px-6 lg:px-8 my-20 space-y-12">
         {[1, 2, 3].map((_, idx) => (
           <div
             key={idx}
-            className="border rounded-3xl p-6 shadow-md bg-white animate-pulse space-y-4"
+            className="border rounded-3xl p-6 shadow-md bg-white/70 backdrop-blur-md animate-pulse space-y-4"
           >
             <div className="flex justify-between items-center mb-4">
               <div className="h-6 w-40 bg-gray-200 rounded"></div>
@@ -66,19 +66,22 @@ export default function AllOrdersPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 md:px-6 lg:px-8 my-20 space-y-12">
-      <h1 className="text-5xl font-extrabold mb-20 text-center bg-gradient-to-r from-pink-500 via-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight">
+    <div className="container mx-auto px-4 md:px-6 lg:px-8 my-24 space-y-12">
+      <h1 className="text-5xl md:text-6xl font-extrabold mb-20 pb-4 text-center bg-gradient-to-r from-pink-500 via-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight">
         My Orders
       </h1>
 
       <div className="flex flex-col gap-10">
-        {orders.map((order) => (
-          <div
+        {orders.map((order, idx) => (
+          <motion.div
             key={order._id}
-            className="border rounded-3xl p-6 shadow-md bg-white hover:shadow-xl transition-all duration-300"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: idx * 0.1, duration: 0.5 }}
+            className="border rounded-3xl p-6 shadow-lg bg-white/70 backdrop-blur-md hover:shadow-2xl transition-all duration-500"
           >
             <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
-              <h2 className="font-bold text-lg text-gray-800 mb-2 md:mb-0">
+              <h2 className="font-bold text-lg md:text-xl text-gray-800 mb-2 md:mb-0">
                 Order #{order._id}
               </h2>
               <span
@@ -92,7 +95,7 @@ export default function AllOrdersPage() {
               </span>
             </div>
 
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 mb-4 text-lg md:text-base">
               Total:{" "}
               <span className="font-semibold text-indigo-600">
                 {order.totalOrderPrice} EGP
@@ -101,8 +104,9 @@ export default function AllOrdersPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
               {order.cartItems.map((item) => (
-                <div
+                <motion.div
                   key={item._id}
+                  whileHover={{ scale: 1.03 }}
                   className="flex items-center gap-3 p-3 border rounded-xl hover:shadow-md transition"
                 >
                   <Image
@@ -120,14 +124,14 @@ export default function AllOrdersPage() {
                       Qty: {item.count} × {item.price} EGP
                     </p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
 
             <p className="text-xs text-gray-400">
               Placed on: {new Date(order.createdAt).toLocaleDateString()}
             </p>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
